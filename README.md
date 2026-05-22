@@ -2,6 +2,9 @@
 
 5 things worth doing today, supplies one tap away.
 
+**Repo:** https://github.com/Archiehere/sidequest
+**Status:** Working local demo. Applying for **Swiggy Instamart MCP partner access** — the real MCP at `mcp.swiggy.com/im` requires credentials (`POST /im` returns `401 Unauthorized` even on the JSON-RPC `initialize` handshake), so the demo runs against a `MockInstamartClient` that implements the same interface (`searchProducts`, `getProduct`, `createBasket`, `initiateCheckout`). Swap-in for the real client is a one-file change in [`apps/api/src/instamart/instamart.module.ts`](apps/api/src/instamart/instamart.module.ts) once access is granted.
+
 This is the working demo. Backend = NestJS + Prisma + **SQLite for demo** (Postgres in prod — schema is portable, change the `datasource` provider and `DATABASE_URL`). Mobile = Expo / React Native. Swiggy Instamart MCP is **mocked locally** (the real MCP at `mcp.swiggy.com/im` returns `401 Unauthorized` even on `initialize` — you need partner credentials to call it). The mock implements the same `InstamartClient` interface so swapping in the real client is a one-file change once prod credentials land.
 
 ## Layout
