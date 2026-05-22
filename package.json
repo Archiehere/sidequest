@@ -1,0 +1,13 @@
+{
+  "name": "sidequest",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "api:dev": "npm --workspace apps/api run start:dev",
+    "api:seed": "npm --workspace apps/api run seed",
+    "mobile:dev": "npm --workspace apps/mobile run start",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  }
+}

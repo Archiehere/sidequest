@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+apps/api/prisma/dev.db*
+apps/mobile/.expo/
+apps/mobile/web-build/

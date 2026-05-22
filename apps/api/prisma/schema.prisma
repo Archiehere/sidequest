@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  handle    String   @unique
+  createdAt DateTime @default(now())
+
+  likes  QuestLike[]
+  orders Order[]
+}
+
+// status: "draft" | "approved" | "live"
+// (sqlite has no enums; keep as string and validate in code)
+model Quest {
+  id           String   @id @default(cuid())
+  dropDate     DateTime
+  title        String
+  description  String
+  heroImageUrl String
+  difficulty   String
+  estTimeMin   Int
+  status       String   @default("draft")
+  createdAt    DateTime @default(now())
+
+  materials QuestMaterial[]
+  likes     QuestLike[]
+  orders    Order[]
+
+  @@index([dropDate, status])
+}
+
+model QuestMaterial {
+  id                 String  @id @default(cuid())
+  questId            String
+  quest              Quest   @relation(fields: [questId], references: [id], onDelete: Cascade)
+  instamartProductId String
+  productName        String
+  qty                Int     @default(1)
+  optional           Boolean @default(false)
+}
+
+model QuestLike {
+  userId    String
+  questId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest Quest @relation(fields: [questId], references: [id], onDelete: Cascade)
+
+  @@id([userId, questId])
+}
+
+model Order {
+  id                     String   @id @default(cuid())
+  userId                 String
+  questId                String
+  instamartOrderRef      String?
+  totalAmount            Int
+  affiliateAttributionId String?
+  status                 String   @default("pending")
+  createdAt              DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  quest Quest @relation(fields: [questId], references: [id])
+}
